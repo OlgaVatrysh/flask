@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class='container'>
+    <div class='container__title'>Где ударение?</div>
+    {% if users.getUsername() != None %}
+    <div class='container__subtitle'>
+        Вы авторизованы как {{users.getUsername()}} <br>
+    </div>
+    {% if users.getNextQuestion() != 0 %}
+    <a href='/question/{{ users.getNextQuestion()}}'>
+        <div class='button'>
+            Продолжить
+        </div>
+    </a>
+    {% endif %}
+    <a href='/new'>
+        <div class='button'>
+            Начать
+        </div>
+    </a>
+    {% if users.getLastSurvey() != 0 %}
+    <a href='/result'>
+        <div class='button'>
+            Результаты
+        </div>
+    </a>
+    {% endif %}
+    <a href='/logout'>
+        <div class='button'>
+            Выйти
+        </div>
+    </a>
+    {% else %}
+    <form action="" method="post">
+        {% if users.getErrors() != None %}
+        <div>{{users.getErrors()}}</div>
+        {% endif %}
+        <div class='form__element_login'>
+            <label for='username'>Имя пользователя</label>
+            <input name='username' required />
+        </div>
+        <div class='form__element_login'>
+            <label for='username'>Пароль</label>
+            <input name='password' type='password' required />
+        </div>
+        <div class='form__element_submit'>
+            <input type='submit' value='Войти' />
+        </div>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

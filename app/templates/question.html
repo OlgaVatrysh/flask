@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class='container'>
+    <div class='container__subtitle'>{{question['quest']}}</div>
+    <form action="" method="post">
+        {% if question['type'] == 'default' %}
+            <div class='form__element'>
+                <input name={{question['id']}} required />
+            </div>
+        {% else %}
+            {% for element in question['answers'] %}
+            <div class='form__element'>
+                <input type={{question['type']}}  name={{question['id']}} value={{element['name']}}
+                    {% if question['type'] != 'checkbox' %}
+                        required
+                    {% endif %}
+                >
+                <label for={{element['name']}}>{{element['value']}}</label>
+            </div>
+            {% endfor %}
+        {% endif %}
+        <div class='form__element_submit'>
+            <input type='submit' value='Ответить'/>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
