@@ -7,6 +7,8 @@ cursor = conn.cursor()
 cursor.execute("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='users'")
 if cursor.fetchone()[0] == 0:
 	cursor.executescript("""
+		PRAGMA foreign_keys=on;
+
 		CREATE TABLE "users" (
 			"id"	INTEGER PRIMARY KEY AUTOINCREMENT,
 			"username"	TEXT NOT NULL,
@@ -24,19 +26,23 @@ if cursor.fetchone()[0] == 0:
 		CREATE TABLE "answers" (
 			"question_id"	INTEGER NOT NULL,
 			"name"	TEXT NOT NULL,
-			"value"	TEXT NOT NULL
+			"value"	TEXT NOT NULL,
+			FOREIGN KEY (question_id) REFERENCES questions(id)
 		);
 
 		CREATE TABLE "results" (
 			"id"	INTEGER PRIMARY KEY AUTOINCREMENT,
 			"user_id"	INTEGER,
 			"last_survey"	INTEGER,
-			"question"	INTEGER
+			"question"	INTEGER,
+			FOREIGN KEY (user_id) REFERENCES users(id),
+			FOREIGN KEY (question) REFERENCES questions(id)
 		);
 
 		CREATE TABLE "ans" (
 			"result_id"	INTEGER,
-			"value"	TEXT
+			"value"	TEXT,
+			FOREIGN KEY (result_id) REFERENCES results(id)
 		);
 	""")
 	

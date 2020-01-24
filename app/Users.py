@@ -8,9 +8,20 @@ class Users:
         self.session = session
         self.errors = None
         if 'username' in session:
-            self.id=session['id']
-            self.username=session['username']
-            self.last_survey=session['last_survey']
+            conn = sqlite3.connect(self.db)
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            sql = "SELECT id FROM users WHERE username=?"
+            cursor.execute(sql, session['username'])
+            if cursor.fetchone() == None:
+                self.session.clear()
+                self.id=None
+                self.username=None
+                self.last_survey=0
+            else:
+                self.id=session['id']
+                self.username=session['username']
+                self.last_survey=session['last_survey']
         else:
             self.id=None
             self.username=None
